@@ -100,6 +100,7 @@ if __name__ == '__main__':
         environment=deployment_env,
         code_version=code_version
     )
+    rollbar.report_message(message='Rollbar is configured correctly', level='info')
 
     try:
         timestamp = sync()
