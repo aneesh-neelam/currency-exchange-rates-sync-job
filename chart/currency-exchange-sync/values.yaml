@@ -14,7 +14,7 @@ cronjob:
 
   image:
     repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     imagePullSecrets: aneeshneelam-container-registry-sfo3
     restartPolicy: Never
     concurrencyPolicy: Forbid
