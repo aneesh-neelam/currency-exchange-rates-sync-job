@@ -1,3 +1,3 @@
 # Usage 
 
-`helm upgrade currency-exchange-sync chart/currency-exchange-sync/ —install`
+`helm install currency-exchange-sync .`
