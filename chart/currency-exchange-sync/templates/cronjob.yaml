@@ -1,6 +1,7 @@
-apiVersion: v1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
+  name: {{ $.Values.cronjob.name }}
   namespace: {{ $.Values.cronjob.metadata.namespace }}
 spec:
   concurrencyPolicy: {{ $.Values.cronjob.image.concurrencyPolicy }}
@@ -8,17 +9,54 @@ spec:
   failedJobsHistoryLimit: 100
   jobTemplate:
     metadata:
-      creationTimestamp: {{ $.Values.cronjob.metadata.creationTimestamp }}
       name: {{ $.Values.cronjob.name }}
+      namespace: {{ $.Values.cronjob.metadata.namespace }}
     spec:
       template:
         metadata:
-          creationTimestamp: {{ $.Values.cronjob.metadata.creationTimestamp }}
+          name: {{ $.Values.cronjob.name }}
+          namespace: {{ $.Values.cronjob.metadata.namespace }}
         spec:
           containers:
           - image: {{ $.Values.cronjob.image.repository }}
             imagePullPolicy: {{ $.Values.cronjob.image.pullPolicy }}
             name: {{ $.Values.cronjob.name }}
+            env:
+              - name: EXCHANGE_RATES_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: exchangeRatesAPIKey
+              - name: DB_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlDbHost
+              - name: DB_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlDbPort
+              - name: DB_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlDbName
+              - name: DB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlDbUser
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlDbPassword
+              - name: ROLLBAR_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: rollbarToken
             resources:
               requests:
                 memory: {{ $.Values.cronjob.resources.requests.memory }}
@@ -37,5 +75,4 @@ spec:
   schedule: {{ quote $.Values.cronjob.schedule }}
   timeZone: {{ $.Values.cronjob.timeZone }}
   suspend: false
-status: {}
 ---

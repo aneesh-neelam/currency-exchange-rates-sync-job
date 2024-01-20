@@ -1,7 +1,7 @@
 cronjob:
   name: currency-exchange-sync-fixed-eight-hour-cron
   schedule: "0 0,8,16 * * *"
-  id: "fixed-eight-hour-cron"
+  id: currency-exchange-sync-fixed-eight-hour-cron
   timeZone: "Asia/Kolkata"
 
   metadata:
