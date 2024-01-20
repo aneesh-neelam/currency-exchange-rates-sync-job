@@ -109,7 +109,6 @@ if __name__ == '__main__':
         }
         rollbar.report_message(message='Successfully synced Currency Exchange Rates', level='info',
                                extra_data=rollbar_data)
-        exit(0)
     except BaseException as e:
         rollbar.report_exc_info()
         raise e
