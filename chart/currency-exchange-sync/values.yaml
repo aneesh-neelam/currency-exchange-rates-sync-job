@@ -4,7 +4,7 @@ cronjob:
   id: currency-exchange-sync-fixed-eight-hour-cron
   timeZone: "Asia/Kolkata"
   env: Production
-  version: 0.1
+  version: "0.1-prod"
 
   metadata:
     namespace: currency-exchange-sync
