@@ -46,7 +46,7 @@ def get_rates(api_key, base_currency=None, other_currencies=None):
 
 
 def get_api_key():
-    return os.environ.get('API_KEY')
+    return os.environ.get('EXCHANGE_RATES_API_KEY')
 
 
 def get_database_credentials():
