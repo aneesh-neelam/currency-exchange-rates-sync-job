@@ -16,7 +16,8 @@ def sync():
     other_currencies = None
     rates_json = get_rates(api_key, base_currency=base_currency, other_currencies=other_currencies)
     print(str(rates_json))
-
+    # TODO: Persist to Database
+    # TODO: Set up Rollbar for Errors
 
 def get_rates(api_key, base_currency=None, other_currencies=None):
     print('Fetching Currency Exchange Rates from API')
