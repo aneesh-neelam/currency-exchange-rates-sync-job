@@ -16,5 +16,16 @@ Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
 Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
 docs for more detail on building and pushing.
 
+### Actual Push
+
+Docker Hub
+
+* `docker buildx build . --push --platform linux/arm64,linux/amd64,linux/amd64/v2,linux/ppc64le,linux/s390x --tag aneeshneelam/currency-exchange-sync`
+
+Digital Ocean Container Registry (Private)
+
+* `docker buildx build . --push --platform linux/amd64 --tag registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync`
+
 ### References
+
 * [Docker's Python guide](https://docs.docker.com/language/python/)
