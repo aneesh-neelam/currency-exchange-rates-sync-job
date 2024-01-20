@@ -13,7 +13,7 @@ latest_rates_url = base_url + 'latest'
 def sync():
     api_key = get_api_key()
     if not api_key:
-        raise RuntimeError('Cannot find API Key in Environment Variables')
+        raise RuntimeError('Cannot find Exchange Rates API Key in Environment Variables')
     base_currency = None
     other_currencies = None
     rates_json = get_rates(api_key, base_currency=base_currency, other_currencies=other_currencies)
@@ -79,7 +79,7 @@ def connect_to_database(db_credentials):
                                          user=db_credentials['user'],
                                          password=db_credentials['password'],
                                          port=db_credentials['port'])
-        print('Database connection initiated: ' + str(db_connection))
+        print('PostgreSQL Database connection initiated: ' + str(db_connection))
     except BaseException as error:
         raise RuntimeError('Could not connect to PostgreSQL database due to Error: `' + str(error) + '`')
     return db_connection
@@ -87,7 +87,7 @@ def connect_to_database(db_credentials):
 
 def close_database_connection(db_connection):
     db_connection.close()
-    print('Database connection closed: ' + str(db_connection))
+    print('PostgreSQL Database connection closed: ' + str(db_connection))
 
 
 # Execution start point
