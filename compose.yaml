@@ -10,7 +10,16 @@
 services:
   sync-job:
     environment:
-      API_KEY: 'Get from https://manage.exchangeratesapi.io/dashboard'
+      # API Key for https://manage.exchangeratesapi.io/dashboard
+      API_KEY: ''
+      # Credentials for DigitalOcean Managed PostgreSQL Database
+      DB_HOST: ''
+      DB_PORT: ''
+      DB_DATABASE: ''
+      DB_USER: ''
+      DB_PASSWORD: ''
+      # Rollbar Token
+      ROLLBAR_TOKEN: ''
     build:
       context: .
 
