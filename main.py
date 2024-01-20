@@ -22,6 +22,7 @@ def sync():
     db_connection = connect_to_database(db_credentials=db_credentials)
     # TODO: Persist to Database
     close_database_connection(db_connection)
+    return rates_json['timestamp']
 
 
 def get_rates(api_key, base_currency=None, other_currencies=None):
@@ -101,7 +102,12 @@ if __name__ == '__main__':
     )
 
     try:
-        sync()
+        timestamp = sync()
+        rollbar_data = {
+            'timestamp': timestamp
+        }
+        rollbar.report_message(message='Successfully synced Currency Exchange Rates', level='info',
+                               extra_data=rollbar_data)
         exit(0)
     except BaseException as e:
         rollbar.report_exc_info()
