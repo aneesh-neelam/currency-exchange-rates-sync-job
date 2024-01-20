@@ -1,5 +1,5 @@
 cronjob:
-  name: fixed-eight-hour-cron
+  name: currency-exchange-sync-fixed-eight-hour-cron
   schedule: "0 0,8,16 * * *"
   id: "fixed-eight-hour-cron"
   timeZone: "Asia/Kolkata"
@@ -11,9 +11,9 @@ cronjob:
   restartPolicy: Never
 
   image:
-    repository: "{{CI_REGISTRY_IMAGE}}/{{CI_COMMIT_REF_SLUG}}:{{CI_COMMIT_SHA}}.{{CI_PIPELINE_IID}}"
+    repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
     pullPolicy: IfNotPresent
-    imagePullSecrets: currency-exchange-sync-secret
+    imagePullSecrets: aneeshneelam-container-registry-sfo3
     restartPolicy: Never
     concurrencyPolicy: Forbid
 
