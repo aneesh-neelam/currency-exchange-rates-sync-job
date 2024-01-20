@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: CronJob
+metadata:
+  namespace: {{ $.Values.cronjob.metadata.namespace }}
+spec:
+  concurrencyPolicy: {{ $.Values.cronjob.image.concurrencyPolicy }}
+  successfulJobsHistoryLimit: 25
+  failedJobsHistoryLimit: 100
+  jobTemplate:
+    metadata:
+      creationTimestamp: {{ $.Values.cronjob.metadata.creationTimestamp }}
+      name: {{ $.Values.cronjob.name }}
+    spec:
+      template:
+        metadata:
+          creationTimestamp: {{ $.Values.cronjob.metadata.creationTimestamp }}
+        spec:
+          containers:
+          - image: {{ $.Values.cronjob.image.repository }}
+            imagePullPolicy: {{ $.Values.cronjob.image.pullPolicy }}
+            name: {{ $.Values.cronjob.name }}
+            resources:
+              requests:
+                memory: {{ $.Values.cronjob.resources.requests.memory }}
+                cpu: {{ $.Values.cronjob.resources.requests.cpu }}
+              limits:
+                memory: {{ $.Values.cronjob.resources.limits.memory }}
+                cpu: {{ $.Values.cronjob.resources.limits.cpu }}
+
+          dnsPolicy: ClusterFirst
+          restartPolicy: {{ $.Values.cronjob.image.restartPolicy }}
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          imagePullSecrets:
+            - name: {{ $.Values.cronjob.image.imagePullSecrets }}
+  schedule: {{ quote $.Values.cronjob.schedule }}
+  timeZone: {{ $.Values.cronjob.timeZone }}
+  suspend: false
+status: {}
+---

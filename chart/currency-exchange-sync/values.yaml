@@ -1,0 +1,26 @@
+cronjob:
+  name: fixed-eight-hour-cron
+  schedule: "0 0,8,16 * * *"
+  id: "fixed-eight-hour-cron"
+  timeZone: "Asia/Kolkata"
+
+  metadata:
+    namespace: currency-exchange-sync
+    creationTimestamp: null
+
+  restartPolicy: Never
+
+  image:
+    repository: "{{CI_REGISTRY_IMAGE}}/{{CI_COMMIT_REF_SLUG}}:{{CI_COMMIT_SHA}}.{{CI_PIPELINE_IID}}"
+    pullPolicy: IfNotPresent
+    imagePullSecrets: currency-exchange-sync-secret
+    restartPolicy: Never
+    concurrencyPolicy: Forbid
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi

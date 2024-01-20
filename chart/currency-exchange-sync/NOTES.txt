@@ -1,0 +1,3 @@
+The Currency Exchange Rates Sync Cron Job
+
+This Cron Job is set up to run periodically every 8 hours
