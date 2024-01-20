@@ -3,6 +3,8 @@ cronjob:
   schedule: "0 0,8,16 * * *"
   id: currency-exchange-sync-fixed-eight-hour-cron
   timeZone: "Asia/Kolkata"
+  env: Production
+  version: 0.1
 
   metadata:
     namespace: currency-exchange-sync

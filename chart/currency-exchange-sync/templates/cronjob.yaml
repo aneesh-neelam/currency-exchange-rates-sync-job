@@ -22,6 +22,10 @@ spec:
             imagePullPolicy: {{ $.Values.cronjob.image.pullPolicy }}
             name: {{ $.Values.cronjob.name }}
             env:
+              - name: DEPLOYMENT_ENVIRONMENT
+                value: {{ $.Values.cronjob.env }}
+              - name: CODE_VERSION
+                value: {{ $.Values.cronjob.version }}
               - name: EXCHANGE_RATES_API_KEY
                 valueFrom:
                   secretKeyRef:

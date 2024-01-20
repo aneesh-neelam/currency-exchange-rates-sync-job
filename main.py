@@ -4,13 +4,13 @@ import os
 
 import psycopg2
 import requests
+import rollbar
 
 base_url = 'http://api.exchangeratesapi.io/v1/'
 latest_rates_url = base_url + 'latest'
 
 
 def sync():
-    # TODO: Set up Rollbar for Errors
     api_key = get_api_key()
     if not api_key:
         raise RuntimeError('Cannot find API Key in Environment Variables')
@@ -63,6 +63,14 @@ def get_rollbar_token():
     return os.environ.get('ROLLBAR_TOKEN')
 
 
+def get_deployment_environment():
+    return os.environ.get('DEPLOYMENT_ENVIRONMENT')
+
+
+def get_code_version():
+    return os.environ.get('CODE_VERSION')
+
+
 def connect_to_database(db_credentials):
     try:
         db_connection = psycopg2.connect(database=db_credentials['database'],
@@ -83,4 +91,18 @@ def close_database_connection(db_connection):
 
 # Execution start point
 if __name__ == '__main__':
-    sync()
+    code_version = get_code_version()
+    deployment_env = get_deployment_environment()
+    rollbar_token = get_rollbar_token()
+    rollbar.init(
+        access_token=rollbar_token,
+        environment=deployment_env,
+        code_version=code_version
+    )
+
+    try:
+        sync()
+        exit(0)
+    except BaseException as e:
+        rollbar.report_exc_info()
+        raise e

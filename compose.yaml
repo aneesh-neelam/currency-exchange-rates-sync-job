@@ -10,6 +10,10 @@
 services:
   sync-job:
     environment:
+      # Code Version
+      CODE_VERSION: "dev"
+      # Deployment Env
+      DEPLOYMENT_ENVIRONMENT: "Development"
       # API Key for https://manage.exchangeratesapi.io/dashboard
       EXCHANGE_RATES_API_KEY: ''
       # Credentials for DigitalOcean Managed PostgreSQL Database
