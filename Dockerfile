@@ -9,7 +9,7 @@ FROM python:${PYTHON_VERSION}-slim as base
 
 RUN apt update \
     && apt -y upgrade \
-    && apt -y install libpq-dev gcc
+    && apt -y install libpq-dev gcc python3-dev
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1

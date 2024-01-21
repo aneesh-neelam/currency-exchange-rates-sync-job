@@ -1,10 +1,15 @@
 #!/bin/env python3
 
+import json
 import os
+from datetime import datetime
 
-import psycopg2
 import requests
 import rollbar
+import sqlalchemy
+from sqlalchemy.orm import Session
+
+import db
 
 base_url = 'http://api.exchangeratesapi.io/v1/'
 latest_rates_url = base_url + 'latest'
@@ -14,14 +19,29 @@ def sync():
     api_key = get_api_key()
     if not api_key:
         raise RuntimeError('Cannot find Exchange Rates API Key in Environment Variables')
-    base_currency = None
-    other_currencies = None
-    rates_json = get_rates(api_key, base_currency=base_currency, other_currencies=other_currencies)
-    print(str(rates_json))
+
+    rates_json = get_rates(api_key)
+    print('Fetched Currency Exchange Rates: ' + str(rates_json))
+
+    # Parse API Response
+    date_str = rates_json['date']
+    rate_date = datetime.strptime(date_str, '%Y-%m-%d')
+    epoch_seconds = rates_json['timestamp']
+    date_time = datetime.fromtimestamp(epoch_seconds)
+    base_currency_code = rates_json['base']
+    rate_dict = rates_json['rates']
+
     db_credentials = get_database_credentials()
-    db_connection = connect_to_database(db_credentials=db_credentials)
-    # TODO: Persist to Database
-    close_database_connection(db_connection)
+    db_url = db_credentials['url']
+    engine = sqlalchemy.create_engine(url=db_url, client_encoding='utf8', echo=True)
+    with Session(engine) as session:
+        for to_currency, rate in rate_dict.items():
+            exchange_rate = db.ExchangeRate(date=rate_date, epoch_seconds=epoch_seconds, timestamp=date_time,
+                                            base=base_currency_code, to=to_currency,
+                                            rate=rate)
+            session.add(exchange_rate)
+        session.commit()
+
     return rates_json['timestamp']
 
 
@@ -51,13 +71,17 @@ def get_api_key():
 
 
 def get_database_credentials():
-    return {
+    credentials = {
         'host': os.environ.get('DB_HOST'),
         'port': os.environ.get('DB_PORT'),
         'database': os.environ.get('DB_DATABASE'),
         'user': os.environ.get('DB_USER'),
         'password': os.environ.get('DB_PASSWORD'),
     }
+    credentials['url'] = "postgresql+psycopg://{user}:{password}@{host}:{port}/{database}?sslmode=require".format(
+        host=credentials['host'], port=credentials['port'], database=credentials['database'], user=credentials['user'],
+        password=credentials['password'])
+    return credentials
 
 
 def get_rollbar_token():
@@ -72,22 +96,9 @@ def get_code_version():
     return os.environ.get('CODE_VERSION')
 
 
-def connect_to_database(db_credentials):
-    try:
-        db_connection = psycopg2.connect(database=db_credentials['database'],
-                                         host=db_credentials['host'],
-                                         user=db_credentials['user'],
-                                         password=db_credentials['password'],
-                                         port=db_credentials['port'])
-        print('PostgreSQL Database connection initiated: ' + str(db_connection))
-    except BaseException as error:
-        raise RuntimeError('Could not connect to PostgreSQL database due to Error: `' + str(error) + '`')
-    return db_connection
-
-
-def close_database_connection(db_connection):
-    db_connection.close()
-    print('PostgreSQL Database connection closed: ' + str(db_connection))
+def get_sample_rates():
+    with open('sample/response.json') as sample_rates_file:
+        return json.load(sample_rates_file)
 
 
 # Execution start point
