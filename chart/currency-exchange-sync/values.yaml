@@ -11,7 +11,7 @@ cronjob:
     creationTimestamp: null
 
   restartPolicy: Never
-  backoffLimit: 3
+  backoffLimit: 1
   successfulJobsHistoryLimit: 20
   failedJobsHistoryLimit: 40
 
