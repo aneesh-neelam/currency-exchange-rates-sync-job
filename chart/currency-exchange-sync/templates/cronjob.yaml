@@ -5,13 +5,14 @@ metadata:
   namespace: {{ $.Values.cronjob.metadata.namespace }}
 spec:
   concurrencyPolicy: {{ $.Values.cronjob.image.concurrencyPolicy }}
-  successfulJobsHistoryLimit: 25
-  failedJobsHistoryLimit: 100
+  successfulJobsHistoryLimit: {{ $.Values.cronjob.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $.Values.cronjob.failedJobsHistoryLimit }}
   jobTemplate:
     metadata:
       name: {{ $.Values.cronjob.name }}
       namespace: {{ $.Values.cronjob.metadata.namespace }}
     spec:
+      backoffLimit: {{ $.Values.cronjob.backoffLimit }}
       template:
         metadata:
           name: {{ $.Values.cronjob.name }}

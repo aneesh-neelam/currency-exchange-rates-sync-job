@@ -11,6 +11,9 @@ cronjob:
     creationTimestamp: null
 
   restartPolicy: Never
+  backoffLimit: 3
+  successfulJobsHistoryLimit: 20
+  failedJobsHistoryLimit: 40
 
   image:
     repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
