@@ -22,7 +22,7 @@ Docker Hub
 
 * `docker buildx build . --push --platform linux/arm64,linux/amd64,linux/amd64/v2 --tag aneeshneelam/currency-exchange-sync`
 
-Digital Ocean Container Registry (Private)
+DigitalOcean Container Registry (Private)
 
 * `docker buildx build . --push --platform linux/amd64 --tag registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync`
 
