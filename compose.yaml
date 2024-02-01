@@ -15,15 +15,15 @@ services:
       # Deployment Env
       DEPLOYMENT_ENVIRONMENT: "Development"
       # API Key for https://manage.exchangeratesapi.io/dashboard
-      EXCHANGE_RATES_API_KEY: ''
+      EXCHANGE_RATES_API_KEY: 'dummy-api-key'
       # Credentials for DigitalOcean Managed PostgreSQL Database
-      DB_HOST: ''
-      DB_PORT: ''
-      DB_DATABASE: ''
-      DB_USER: ''
-      DB_PASSWORD: ''
+      DB_HOST: 'localhost'
+      DB_PORT: '5432'
+      DB_DATABASE: 'postgres'
+      DB_USER: 'postgres'
+      DB_PASSWORD: 'example'
       # Rollbar Token
-      ROLLBAR_TOKEN: ''
+      ROLLBAR_TOKEN: 'dummy-token'
     build:
       context: .
 
