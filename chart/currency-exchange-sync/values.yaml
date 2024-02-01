@@ -4,7 +4,7 @@ cronjob:
   id: currency-exchange-sync-fixed-eight-hour-cron
   timeZone: "Asia/Kolkata"
   env: Production
-  version: "1.0-prod"
+  version: "1.1-prod"
 
   metadata:
     namespace: currency-exchange-sync
@@ -12,8 +12,8 @@ cronjob:
 
   restartPolicy: Never
   backoffLimit: 1
-  successfulJobsHistoryLimit: 20
-  failedJobsHistoryLimit: 40
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 10
 
   image:
     repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
