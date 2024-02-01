@@ -46,7 +46,7 @@ def sync():
             exchange_rate = db.ExchangeRate(date=rate_date, epoch_seconds=epoch_seconds, timestamp=date_time,
                                             base=base_currency_code, to=to_currency,
                                             rate=rate)
-            print('Inserting new Currency Exchange Rate from API into Database')
+            print('Inserting new Currency Exchange Rate from API into Database: ' + str(exchange_rate))
             session.add(exchange_rate)
         session.commit()
         print('Inserted all new Currency Exchange Rates from API into Database')
