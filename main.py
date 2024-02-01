@@ -2,7 +2,7 @@
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import rollbar
@@ -13,6 +13,8 @@ import db
 
 base_url = 'http://api.exchangeratesapi.io/v1/'
 latest_rates_url = base_url + 'latest'
+
+retention_period_days = 370
 
 
 def sync():
@@ -31,18 +33,37 @@ def sync():
     base_currency_code = rates_json['base']
     rate_dict = rates_json['rates']
 
+    oldest_rate_retention_date = (rate_date - timedelta(days=retention_period_days)).date()
+    print('Oldest Currency Exchange Rate Retention Date: ' + str(oldest_rate_retention_date))
+
     db_credentials = get_database_credentials()
     db_url = db_credentials['url']
     engine = sqlalchemy.create_engine(url=db_url, client_encoding='utf8', echo=True)
     with Session(engine) as session:
+        print('Inserting all new Currency Exchange Rates from API into Database')
+        # Insert latest Rates
         for to_currency, rate in rate_dict.items():
             exchange_rate = db.ExchangeRate(date=rate_date, epoch_seconds=epoch_seconds, timestamp=date_time,
                                             base=base_currency_code, to=to_currency,
                                             rate=rate)
+            print('Inserting new Currency Exchange Rate from API into Database')
             session.add(exchange_rate)
         session.commit()
+        print('Inserted all new Currency Exchange Rates from API into Database')
+        # Clean up old Rates
+        print('Cleaning up old Currency Exchange Rates from Database, '
+              'older than Retention Date: ' + str(oldest_rate_retention_date))
+        delete_stmt = sqlalchemy.delete(db.ExchangeRate).where(db.ExchangeRate.date.__lt__(oldest_rate_retention_date))
+        session.execute(delete_stmt)
+        session.commit()
+        print('Cleaned up old Currency Exchange Rates from Database, '
+              'older than Retention Date: ' + str(oldest_rate_retention_date))
 
-    return rates_json['timestamp']
+    return {
+        'timestamp': rates_json['timestamp'],
+        'rate_date': date_str,
+        'oldest_rate_retention_date': str(oldest_rate_retention_date)
+    }
 
 
 def get_rates(api_key, base_currency=None, other_currencies=None):
@@ -111,15 +132,17 @@ if __name__ == '__main__':
         environment=deployment_env,
         code_version=code_version
     )
-    rollbar.report_message(message='Rollbar is configured correctly', level='info')
 
     try:
-        timestamp = sync()
+        result = sync()
         rollbar_data = {
-            'timestamp': timestamp
+            'timestamp': result['timestamp'],
+            'rate_date': result['rate_date'],
+            'oldest_rate_retention_date': result['oldest_rate_retention_date']
         }
-        rollbar.report_message(message='Successfully synced Currency Exchange Rates', level='info',
-                               extra_data=rollbar_data)
+        rollbar.report_message(message='Successfully synced Currency Exchange Rates, '
+                                       'and cleaned up stored Currency Exchange Rates older than Retention Date',
+                               level='info', extra_data=rollbar_data)
     except BaseException as e:
         rollbar.report_exc_info()
         raise e
