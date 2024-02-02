@@ -18,12 +18,12 @@ retention_period_days = 370
 
 
 def sync():
-    #api_key = get_api_key()
-    #if not api_key:
-    #    raise RuntimeError('Cannot find Exchange Rates API Key in Environment Variables')
+    api_key = get_api_key()
+    if not api_key:
+        raise RuntimeError('Cannot find Exchange Rates API Key in Environment Variables')
 
-    #rates_json = get_rates(api_key)
-    rates_json = get_sample_rates()
+    rates_json = get_rates(api_key)
+    sample_rates_json = get_sample_rates()
     print('Fetched Currency Exchange Rates: ' + str(rates_json))
 
     # Parse API Response
@@ -40,10 +40,6 @@ def sync():
     db_credentials = get_database_credentials()
     db_url = db_credentials['url']
     engine = sqlalchemy.create_engine(url=db_url, client_encoding='utf8', echo=True)
-    with engine.connect() as connection:
-        print("Creating Database Table if not exists")
-        db.ExchangeRate.metadata.create_all(connection)
-
     with Session(engine) as session:
         print('Inserting all new Currency Exchange Rates from API into Database')
         # Insert latest Rates
@@ -98,13 +94,13 @@ def get_api_key():
 
 def get_database_credentials():
     credentials = {
-        'host': 'localhost',#os.environ.get('DB_HOST'),
-        'port': '5432',#os.environ.get('DB_PORT'),
-        'database': 'postgres',  #os.environ.get('DB_DATABASE'),
-        'user': 'postgres',#os.environ.get('DB_USER'),
-        'password': 'password',#os.environ.get('DB_PASSWORD'),
+        'host': os.environ.get('DB_HOST'),
+        'port': os.environ.get('DB_PORT'),
+        'database': os.environ.get('DB_DATABASE'),
+        'user': os.environ.get('DB_USER'),
+        'password': os.environ.get('DB_PASSWORD'),
     }
-    credentials['url'] = "postgresql+psycopg://{user}:{password}@{host}:{port}/{database}".format(
+    credentials['url'] = "postgresql+psycopg://{user}:{password}@{host}:{port}/{database}?sslmode=require".format(
         host=credentials['host'], port=credentials['port'], database=credentials['database'], user=credentials['user'],
         password=credentials['password'])
     return credentials
