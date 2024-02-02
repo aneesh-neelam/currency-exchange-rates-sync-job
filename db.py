@@ -19,4 +19,5 @@ class ExchangeRate(DeclarativeBase):
     rate: Mapped[decimal.Decimal] = mapped_column(sqlalchemy.DECIMAL, name='rate', nullable=False)
 
     def __repr__(self):
-        return f'<ExchangeRate: {self}'
+        return ('id: {}, date: {}, timestamp: {}, base: {}, to: {}, rate: {}'
+                .format(self.id, self.date, self.timestamp, self.base, self.to, self.rate))
