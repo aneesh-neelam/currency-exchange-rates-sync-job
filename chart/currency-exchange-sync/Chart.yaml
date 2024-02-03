@@ -2,4 +2,4 @@ apiVersion: v1
 description: A Helm chart for Currency Exchange Sync Cron Job on Kubernetes
 icon: https://raw.githubusercontent.com/jenkins-x/jenkins-x-platform/master/images/python.png
 name: currency-exchange-sync-cronjob
-version: 1.2.0
+version: 1.4.0

@@ -3,8 +3,11 @@ cronjob:
   schedule: "0 0,8,16 * * *"
   id: currency-exchange-sync-fixed-eight-hour-cron
   timeZone: "Asia/Kolkata"
+  exchangeRatesApiLatestRatesUrl: http://api.exchangeratesapi.io/v1/latest
+  retentionPeriodDays: 400
   env: Production
-  version: "1.2-prod"
+  logLevel: INFO
+  version: "1.4-prod"
 
   metadata:
     namespace: currency-exchange-sync
@@ -24,8 +27,8 @@ cronjob:
 
   resources:
     requests:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 10m
+      memory: 8Mi
     limits:
-      cpu: 200m
-      memory: 128Mi
+      cpu: 100m
+      memory: 16Mi

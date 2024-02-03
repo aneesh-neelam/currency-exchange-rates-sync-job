@@ -10,10 +10,14 @@
 services:
   sync-job:
     environment:
+      # Log Level
+      LOG_LEVEL: 'DEBUG'
       # Code Version
       CODE_VERSION: "dev"
       # Deployment Env
       DEPLOYMENT_ENVIRONMENT: "Development"
+      # URL for Latest Rates from https://manage.exchangeratesapi.io/dashboard
+      EXCHANGE_RATES_API_LATEST_RATES_URL: http://api.exchangeratesapi.io/v1/latest
       # API Key for https://manage.exchangeratesapi.io/dashboard
       EXCHANGE_RATES_API_KEY: 'dummy-api-key'
       # Credentials for DigitalOcean Managed PostgreSQL Database
@@ -22,8 +26,11 @@ services:
       DB_DATABASE: 'postgres'
       DB_USER: 'postgres'
       DB_PASSWORD: 'example'
+      DB_SSL_MODE: 'prefer'
       # Rollbar Token
       ROLLBAR_TOKEN: 'dummy-token'
+      # Retention period for Currency Exchange Rates
+      RETENTION_PERIOD_DAYS: '370'
     build:
       context: .
 

@@ -23,8 +23,14 @@ spec:
             imagePullPolicy: {{ $.Values.cronjob.image.pullPolicy }}
             name: {{ $.Values.cronjob.name }}
             env:
+              - name: EXCHANGE_RATES_API_LATEST_RATES_URL
+                value: {{ $.Values.cronjob.exchangeRatesApiLatestRatesUrl }}
+              - name: RETENTION_PERIOD_DAYS
+                value: {{ $.Values.cronjob.retentionPeriodDays }}
               - name: DEPLOYMENT_ENVIRONMENT
                 value: {{ $.Values.cronjob.env }}
+              - name: LOG_LEVEL
+                value: {{ $.Values.cronjob.logLevel }}
               - name: CODE_VERSION
                 value: {{ $.Values.cronjob.version }}
               - name: EXCHANGE_RATES_API_KEY
@@ -57,6 +63,11 @@ spec:
                   secretKeyRef:
                     name: sync-job
                     key: postgresSqlDbPassword
+              - name: DB_SSL_MODE
+                valueFrom:
+                  secretKeyRef:
+                    name: sync-job
+                    key: postgresSqlSslMode
               - name: ROLLBAR_TOKEN
                 valueFrom:
                   secretKeyRef:
