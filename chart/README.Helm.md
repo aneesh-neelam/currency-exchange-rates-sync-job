@@ -1,6 +1,7 @@
 # Usage 
 
-[Helm Values](currency-exchange-sync/README.md)
+* [Helm Values](currency-exchange-sync/README.md)
+* Secrets: [sync-job](chart/currency-exchange-sync/secrets.json)
 
 #### Install/Upgrade
 
