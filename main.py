@@ -20,8 +20,10 @@ def sync():
 
     api_key = get_api_key()
     if not api_key:
-        logging.log(logging.CRITICAL, 'Cannot find Exchange Rates API Key for URL: %s in Environment Variables', latest_rates_url)
-        raise RuntimeError('Cannot find Exchange Rates API Key for URL: {} in Environment Variables'.format(latest_rates_url))
+        logging.log(logging.CRITICAL, 'Cannot find Exchange Rates API Key for URL: %s in Environment Variables',
+                    latest_rates_url)
+        raise RuntimeError(
+            'Cannot find Exchange Rates API Key for URL: {} in Environment Variables'.format(latest_rates_url))
 
     rates_json = get_rates(latest_rates_url=latest_rates_url, api_key=api_key)
     # rates_json = get_sample_rates()
@@ -74,6 +76,7 @@ def sync():
         'rate_date': date_str,
         'oldest_rate_retention_date': str(oldest_rate_retention_date),
         'base_currency': base_currency_code,
+        'rates_count': len(rate_dict),
     }
 
 
@@ -180,9 +183,13 @@ if __name__ == '__main__':
             'base_currency': result['base_currency'],
             'rate_date': result['rate_date'],
             'oldest_rate_retention_date': result['oldest_rate_retention_date'],
+            'rates_count': result['rates_count'],
         }
-        logging.log(logging.INFO, 'Successfully synced Currency Exchange Rates, '
-                                  'and cleaned up stored Currency Exchange Rates older than Retention Date: %s',
+        logging.log(logging.INFO,
+                    'Successfully synced %d Currency Exchange Rates against Base Currency: %s; '
+                    'for Date: %s, Timestamp: %s; '
+                    'and cleaned up stored Currency Exchange Rates older than Retention Date: %s',
+                    result['rates_count'], result['base_currency'], result['rate_date'], result['timestamp'],
                     result['oldest_rate_retention_date'])
         rollbar.report_message(message='Successfully synced Currency Exchange Rates, '
                                        'and cleaned up stored Currency Exchange Rates older than Retention Date',
