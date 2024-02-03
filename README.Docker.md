@@ -20,11 +20,11 @@ docs for more detail on building and pushing.
 
 Docker Hub
 
-* `docker buildx build . --push --platform linux/arm64,linux/amd64,linux/amd64/v2 --tag aneeshneelam/currency-exchange-sync:latest --tag aneeshneelam/currency-exchange-sync:1.4`
+* `docker buildx build . --push --platform linux/arm64,linux/amd64,linux/amd64/v2 --tag aneeshneelam/currency-exchange-sync:latest --tag aneeshneelam/currency-exchange-sync:1.4 --attest type=provenance,mode=max`
 
 DigitalOcean Container Registry (Private)
 
-* `docker buildx build . --push --platform linux/amd64 --tag registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync`
+* `docker buildx build . --push --platform linux/amd64 --tag registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync --attest type=provenance,mode=max`
 
 ### References
 
