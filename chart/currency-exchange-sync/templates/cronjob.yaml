@@ -26,7 +26,7 @@ spec:
               - name: EXCHANGE_RATES_API_LATEST_RATES_URL
                 value: {{ $.Values.cronjob.exchangeRatesApiLatestRatesUrl }}
               - name: RETENTION_PERIOD_DAYS
-                value: {{ $.Values.cronjob.retentionPeriodDays }}
+                value: {{ $.Values.cronjob.retentionPeriodDays | quote }}
               - name: DEPLOYMENT_ENVIRONMENT
                 value: {{ $.Values.cronjob.env }}
               - name: LOG_LEVEL
