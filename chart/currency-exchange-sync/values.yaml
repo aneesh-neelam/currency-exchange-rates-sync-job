@@ -7,7 +7,7 @@ cronjob:
   retentionPeriodDays: 400
   env: Production
   logLevel: INFO
-  version: "1.4-prod"
+  version: "1.5-prod"
 
   metadata:
     namespace: currency-exchange-sync
@@ -27,8 +27,8 @@ cronjob:
 
   resources:
     requests:
-      cpu: 10m
-      memory: 32Mi
-    limits:
       cpu: 100m
       memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
