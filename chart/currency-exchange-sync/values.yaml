@@ -11,7 +11,7 @@ cronjob:
 
   metadata:
     namespace: currency-exchange-sync
-    creationTimestamp: null
+    secret: sync-job
 
   restartPolicy: Never
   backoffLimit: 1

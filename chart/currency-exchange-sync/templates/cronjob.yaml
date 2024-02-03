@@ -36,42 +36,42 @@ spec:
               - name: EXCHANGE_RATES_API_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: exchangeRatesAPIKey
               - name: DB_HOST
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlDbHost
               - name: DB_PORT
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlDbPort
               - name: DB_DATABASE
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlDbName
               - name: DB_USER
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlDbUser
               - name: DB_PASSWORD
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlDbPassword
               - name: DB_SSL_MODE
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: postgresSqlSslMode
               - name: ROLLBAR_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: sync-job
+                    name: {{ .Values.cronjob.metadata.secret }}
                     key: rollbarToken
             resources:
               requests:
