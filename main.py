@@ -157,7 +157,8 @@ def get_sample_rates():
 # Execution start point
 if __name__ == '__main__':
     log_level = get_log_level()
-    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout,
+    print('Setting up Logger with Log Level: {}'.format(log_level))
+    logging.basicConfig(level=log_level, stream=sys.stdout,
                         format='{asctime} {levelname} {pathname}:{lineno} {message}',
                         style='{', encoding='utf-8')
 
