@@ -195,7 +195,8 @@ if __name__ == '__main__':
     )
 
     try:
-        result = sync()
+        with sentry_sdk.monitor(monitor_slug='currency-exchange-rates-sync-job'):
+            result = sync()
         rollbar_data = {
             'timestamp': result['timestamp'],
             'base_currency': result['base_currency'],
