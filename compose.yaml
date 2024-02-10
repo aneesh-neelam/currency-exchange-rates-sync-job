@@ -29,6 +29,8 @@ services:
       DB_SSL_MODE: 'prefer'
       # Rollbar Token
       ROLLBAR_TOKEN: 'dummy-token'
+      # Sentry DSN
+      SENTRY_DSN: 'dummy-dsn'
       # Retention period for Currency Exchange Rates
       RETENTION_PERIOD_DAYS: '370'
     build:

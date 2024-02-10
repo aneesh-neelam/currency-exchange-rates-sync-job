@@ -15,23 +15,26 @@ The following table lists the configurable parameters of the Currency-exchange-s
 | `cronjob.schedule` |  | `"0 0,8,16 * * *"` |
 | `cronjob.id` |  | `"currency-exchange-sync-fixed-eight-hour-cron"` |
 | `cronjob.timeZone` |  | `"Asia/Kolkata"` |
+| `cronjob.exchangeRatesApiLatestRatesUrl` |  | `"http://api.exchangeratesapi.io/v1/latest"` |
+| `cronjob.retentionPeriodDays` |  | `400` |
 | `cronjob.env` |  | `"Production"` |
-| `cronjob.version` |  | `"1.0-prod"` |
+| `cronjob.logLevel` |  | `"INFO"` |
+| `cronjob.version` |  | `"1.5-prod"` |
 | `cronjob.metadata.namespace` |  | `"currency-exchange-sync"` |
-| `cronjob.metadata.creationTimestamp` |  | `null` |
+| `cronjob.metadata.secret` |  | `"sync-job"` |
 | `cronjob.restartPolicy` |  | `"Never"` |
 | `cronjob.backoffLimit` |  | `1` |
-| `cronjob.successfulJobsHistoryLimit` |  | `20` |
-| `cronjob.failedJobsHistoryLimit` |  | `40` |
+| `cronjob.successfulJobsHistoryLimit` |  | `5` |
+| `cronjob.failedJobsHistoryLimit` |  | `10` |
 | `cronjob.image.repository` |  | `"registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync"` |
 | `cronjob.image.pullPolicy` |  | `"Always"` |
 | `cronjob.image.imagePullSecrets` |  | `"aneeshneelam-container-registry-sfo3"` |
 | `cronjob.image.restartPolicy` |  | `"Never"` |
 | `cronjob.image.concurrencyPolicy` |  | `"Forbid"` |
 | `cronjob.resources.requests.cpu` |  | `"100m"` |
-| `cronjob.resources.requests.memory` |  | `"128Mi"` |
+| `cronjob.resources.requests.memory` |  | `"64Mi"` |
 | `cronjob.resources.limits.cpu` |  | `"500m"` |
-| `cronjob.resources.limits.memory` |  | `"256Mi"` |
+| `cronjob.resources.limits.memory` |  | `"128Mi"` |
 
 
 

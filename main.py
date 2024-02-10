@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 import requests
 import rollbar
+import sentry_sdk
 import sqlalchemy
 from sqlalchemy.orm import Session
 
@@ -132,6 +133,10 @@ def get_rollbar_token():
     return os.environ.get('ROLLBAR_TOKEN')
 
 
+def get_sentry_dsn():
+    return os.environ.get('SENTRY_DSN')
+
+
 def get_deployment_environment():
     return os.environ.get('DEPLOYMENT_ENVIRONMENT', 'Development')
 
@@ -175,6 +180,19 @@ if __name__ == '__main__':
         environment=deployment_env,
         code_version=code_version
     )
+    sentry_dsn = get_sentry_dsn()
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        # Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
+        traces_sample_rate=1.0,
+        # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+        # Environment
+        environment=deployment_env,
+        # Release
+        release=code_version,
+    )
 
     try:
         result = sync()
@@ -185,6 +203,7 @@ if __name__ == '__main__':
             'oldest_rate_retention_date': result['oldest_rate_retention_date'],
             'rates_count': result['rates_count'],
         }
+
         logging.log(logging.INFO,
                     'Successfully synced %d Currency Exchange Rates against Base Currency: %s; '
                     'for Date: %s, Timestamp: %s; '

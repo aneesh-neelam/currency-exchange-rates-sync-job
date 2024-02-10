@@ -73,6 +73,11 @@ spec:
                   secretKeyRef:
                     name: {{ .Values.cronjob.metadata.secret }}
                     key: rollbarToken
+              - name: SENTRY_DSN
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.cronjob.metadata.secret }}
+                    key: sentryDsn
             resources:
               requests:
                 memory: {{ $.Values.cronjob.resources.requests.memory }}
