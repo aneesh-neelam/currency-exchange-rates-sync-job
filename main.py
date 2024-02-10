@@ -185,6 +185,7 @@ if __name__ == '__main__':
         dsn=sentry_dsn,
         shutdown_timeout=5,
         debug=True,
+        send_default_pii=True, # There is no PII anyway
         attach_stacktrace=True,
         enable_tracing=True,
         # Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
