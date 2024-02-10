@@ -183,6 +183,7 @@ if __name__ == '__main__':
     sentry_dsn = get_sentry_dsn()
     sentry_sdk.init(
         dsn=sentry_dsn,
+        shutdown_timeout=5,
         attach_stacktrace=True,
         enable_tracing=True,
         # Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
