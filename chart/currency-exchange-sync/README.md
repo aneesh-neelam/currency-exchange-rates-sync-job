@@ -11,21 +11,21 @@ The following table lists the configurable parameters of the Currency-exchange-s
 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
-| `cronjob.name` |  | `"currency-exchange-sync-fixed-eight-hour-cron"` |
-| `cronjob.schedule` |  | `"0 0,8,16 * * *"` |
-| `cronjob.id` |  | `"currency-exchange-sync-fixed-eight-hour-cron"` |
+| `cronjob.name` |  | `"currency-exchange-rates-sync"` |
+| `cronjob.schedule` |  | `"0 0,3,6,9,12,15,18,21 * * *"` |
+| `cronjob.id` |  | `"currency-exchange-rates-sync"` |
 | `cronjob.timeZone` |  | `"Asia/Kolkata"` |
 | `cronjob.exchangeRatesApiLatestRatesUrl` |  | `"http://api.exchangeratesapi.io/v1/latest"` |
 | `cronjob.retentionPeriodDays` |  | `400` |
 | `cronjob.env` |  | `"Production"` |
 | `cronjob.logLevel` |  | `"INFO"` |
-| `cronjob.version` |  | `"1.5-prod"` |
+| `cronjob.version` |  | `"2.0-prod"` |
 | `cronjob.metadata.namespace` |  | `"currency-exchange-sync"` |
 | `cronjob.metadata.secret` |  | `"sync-job"` |
 | `cronjob.restartPolicy` |  | `"Never"` |
 | `cronjob.backoffLimit` |  | `1` |
-| `cronjob.successfulJobsHistoryLimit` |  | `5` |
-| `cronjob.failedJobsHistoryLimit` |  | `10` |
+| `cronjob.successfulJobsHistoryLimit` |  | `8` |
+| `cronjob.failedJobsHistoryLimit` |  | `8` |
 | `cronjob.image.repository` |  | `"registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync"` |
 | `cronjob.image.pullPolicy` |  | `"Always"` |
 | `cronjob.image.imagePullSecrets` |  | `"aneeshneelam-container-registry-sfo3"` |
