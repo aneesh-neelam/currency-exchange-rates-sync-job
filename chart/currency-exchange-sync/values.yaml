@@ -1,13 +1,13 @@
 cronjob:
-  name: currency-exchange-sync-fixed-eight-hour-cron
-  schedule: "0 0,8,16 * * *"
-  id: currency-exchange-sync-fixed-eight-hour-cron
+  name: currency-exchange-rates-sync
+  schedule: "0 0,3,6,9,12,15,18,21 * * *"
+  id: currency-exchange-rates-sync
   timeZone: "Asia/Kolkata"
   exchangeRatesApiLatestRatesUrl: http://api.exchangeratesapi.io/v1/latest
   retentionPeriodDays: 400
   env: Production
   logLevel: INFO
-  version: "1.6-prod"
+  version: "2.0-prod"
 
   metadata:
     namespace: currency-exchange-sync
@@ -15,8 +15,8 @@ cronjob:
 
   restartPolicy: Never
   backoffLimit: 1
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 10
+  successfulJobsHistoryLimit: 8
+  failedJobsHistoryLimit: 8
 
   image:
     repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
