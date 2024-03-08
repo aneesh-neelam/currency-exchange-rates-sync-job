@@ -40,6 +40,7 @@ def insert_new_rates(session, rate_date, epoch_seconds, date_time, base_currency
     logging.log(logging.INFO, 'Inserted %d new Currency Exchange Rates from API into Database',
                 len(rate_dict))
 
+
 def cleanup_old_rates(session, oldest_rate_retention_date):
     logging.log(logging.INFO, 'Cleaning up old Currency Exchange Rates from Database, '
                               'older than Retention Date: %s',
@@ -50,6 +51,7 @@ def cleanup_old_rates(session, oldest_rate_retention_date):
     logging.log(logging.INFO, 'Cleaned up old Currency Exchange Rates from Database, '
                               'older than Retention Date: %s',
                 oldest_rate_retention_date)
+
 
 def sync_rates():
     latest_rates_url = get_exchange_rates_api_latest_rates_url()
