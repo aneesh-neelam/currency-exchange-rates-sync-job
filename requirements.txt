@@ -5,7 +5,7 @@ psycopg==3.1.18
 psycopg_pool==3.2.1
 requests==2.31.0
 rollbar==1.0.0
-sentry-sdk==1.40.6
+sentry-sdk==1.41.0
 six==1.16.0
 SQLAlchemy==2.0.28
 typing_extensions==4.10.0
