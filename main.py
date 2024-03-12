@@ -15,7 +15,45 @@ from sqlalchemy.orm import Session
 import db
 
 
-def sync():
+def parse_api_response(rates_json):
+    date_str = rates_json['date']
+    rate_date = datetime.strptime(date_str, '%Y-%m-%d')
+    epoch_seconds = rates_json['timestamp']
+    date_time = datetime.fromtimestamp(epoch_seconds, tz=timezone.utc)
+    base_currency_code = rates_json['base']
+    rate_dict = rates_json['rates']
+
+    return rate_date, epoch_seconds, date_time, base_currency_code, rate_dict
+
+
+def insert_new_rates(session, rate_date, epoch_seconds, date_time, base_currency_code, rate_dict):
+    logging.log(logging.INFO, 'Inserting %d new Currency Exchange Rates from API into Database',
+                len(rate_dict))
+    for to_currency, rate in rate_dict.items():
+        exchange_rate = db.ExchangeRate(date=rate_date, epoch_seconds=epoch_seconds, timestamp=date_time,
+                                        base=base_currency_code, to=to_currency,
+                                        rate=rate)
+        logging.log(logging.INFO, 'Inserting new Currency Exchange Rate from API into Database: %s',
+                    exchange_rate)
+        session.add(exchange_rate)
+    session.commit()
+    logging.log(logging.INFO, 'Inserted %d new Currency Exchange Rates from API into Database',
+                len(rate_dict))
+
+
+def cleanup_old_rates(session, oldest_rate_retention_date):
+    logging.log(logging.INFO, 'Cleaning up old Currency Exchange Rates from Database, '
+                              'older than Retention Date: %s',
+                oldest_rate_retention_date)
+    delete_stmt = sqlalchemy.delete(db.ExchangeRate).where(db.ExchangeRate.date.__lt__(oldest_rate_retention_date))
+    session.execute(delete_stmt)
+    session.commit()
+    logging.log(logging.INFO, 'Cleaned up old Currency Exchange Rates from Database, '
+                              'older than Retention Date: %s',
+                oldest_rate_retention_date)
+
+
+def sync_rates():
     latest_rates_url = get_exchange_rates_api_latest_rates_url()
     logging.log(logging.INFO, 'Using Exchange Rates API at: %s', latest_rates_url)
 
@@ -27,19 +65,11 @@ def sync():
             'Cannot find Exchange Rates API Key for URL: {} in Environment Variables'.format(latest_rates_url))
 
     rates_json = get_rates(latest_rates_url=latest_rates_url, api_key=api_key)
-    # rates_json = get_sample_rates()
     logging.log(logging.INFO, 'Fetched Currency Exchange Rates: %s', rates_json)
 
-    # Parse API Response
-    date_str = rates_json['date']
-    rate_date = datetime.strptime(date_str, '%Y-%m-%d')
-    epoch_seconds = rates_json['timestamp']
-    date_time = datetime.fromtimestamp(epoch_seconds, tz=timezone.utc)
-    base_currency_code = rates_json['base']
-    rate_dict = rates_json['rates']
+    rate_date, epoch_seconds, date_time, base_currency_code, rate_dict = parse_api_response(rates_json)
 
     retention_period_days = int(get_retention_period_days())
-
     oldest_rate_retention_date = (rate_date - timedelta(days=retention_period_days)).date()
     logging.log(logging.INFO, 'Oldest Currency Exchange Rate Retention Date: %s',
                 oldest_rate_retention_date)
@@ -48,33 +78,12 @@ def sync():
     db_url = db_credentials['url']
     engine = sqlalchemy.create_engine(url=db_url, client_encoding='utf8', echo=True)
     with Session(engine) as session:
-        logging.log(logging.INFO, 'Inserting %d new Currency Exchange Rates from API into Database',
-                    len(rate_dict))
-        # Insert latest Rates
-        for to_currency, rate in rate_dict.items():
-            exchange_rate = db.ExchangeRate(date=rate_date, epoch_seconds=epoch_seconds, timestamp=date_time,
-                                            base=base_currency_code, to=to_currency,
-                                            rate=rate)
-            logging.log(logging.INFO, 'Inserting new Currency Exchange Rate from API into Database: %s',
-                        exchange_rate)
-            session.add(exchange_rate)
-        session.commit()
-        logging.log(logging.INFO, 'Inserted %d new Currency Exchange Rates from API into Database',
-                    len(rate_dict))
-        # Clean up old Rates
-        logging.log(logging.INFO, 'Cleaning up old Currency Exchange Rates from Database, '
-                                  'older than Retention Date: %s',
-                    oldest_rate_retention_date)
-        delete_stmt = sqlalchemy.delete(db.ExchangeRate).where(db.ExchangeRate.date.__lt__(oldest_rate_retention_date))
-        session.execute(delete_stmt)
-        session.commit()
-        logging.log(logging.INFO, 'Cleaned up old Currency Exchange Rates from Database, '
-                                  'older than Retention Date: %s',
-                    oldest_rate_retention_date)
+        insert_new_rates(session, rate_date, epoch_seconds, date_time, base_currency_code, rate_dict)
+        cleanup_old_rates(session, oldest_rate_retention_date)
 
     return {
         'timestamp': rates_json['timestamp'],
-        'rate_date': date_str,
+        'rate_date': str(rate_date),
         'oldest_rate_retention_date': str(oldest_rate_retention_date),
         'base_currency': base_currency_code,
         'rates_count': len(rate_dict),
@@ -201,7 +210,7 @@ if __name__ == '__main__':
 
     try:
         with sentry_sdk.monitor(monitor_slug='currency-exchange-rates-sync-job'):
-            result = sync()
+            result = sync_rates()
         rollbar_data = {
             'timestamp': result['timestamp'],
             'base_currency': result['base_currency'],
