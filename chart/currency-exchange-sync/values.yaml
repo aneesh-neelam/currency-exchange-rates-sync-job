@@ -1,6 +1,6 @@
 cronjob:
   name: currency-exchange-rates-sync
-  schedule: "0 0,3,6,9,12,15,18,21 * * *"
+  schedule: "0 0,8,16 * * *"
   id: currency-exchange-rates-sync
   timeZone: "Asia/Kolkata"
   exchangeRatesApiLatestRatesUrl: http://api.exchangeratesapi.io/v1/latest
