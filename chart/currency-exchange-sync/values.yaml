@@ -7,7 +7,7 @@ cronjob:
   retentionPeriodDays: 400
   env: Production
   logLevel: INFO
-  version: "2.0-prod"
+  version: "2.2-prod"
 
   metadata:
     namespace: currency-exchange-sync
