@@ -2,7 +2,7 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
 idna==3.10
 psycopg==3.2.3
-psycopg_pool==3.2.3
+psycopg_pool==3.2.4
 requests==2.32.3
 rollbar==1.0.0
 sentry-sdk==2.19.2
