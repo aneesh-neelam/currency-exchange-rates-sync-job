@@ -5,7 +5,7 @@
 # https://docs.docker.com/go/dockerfile-reference/
 
 ARG PYTHON_VERSION=3.13.1
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:${PYTHON_VERSION}-slim AS base
 
 RUN apt update \
     && apt -y upgrade \
@@ -45,4 +45,4 @@ USER appuser
 COPY . .
 
 # Run the application.
-CMD ./main.py
+CMD ["./main.py"]
