@@ -4,8 +4,8 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/go/dockerfile-reference/
 
-ARG PYTHON_VERSION=3.13.1
-FROM python:${PYTHON_VERSION}-slim AS base
+ARG IMAGE_TAG=3.14.3-slim-trixie
+FROM python:${IMAGE_TAG} AS base
 
 RUN apt update \
     && apt -y upgrade \

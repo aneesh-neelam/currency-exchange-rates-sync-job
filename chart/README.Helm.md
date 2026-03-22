@@ -1,14 +1,34 @@
-# Usage 
+# Usage
 
 * [Helm Values](currency-exchange-sync/README.md)
-* Secrets: [sync-job](chart/currency-exchange-sync/secrets.json)
+
+#### Secrets
+
+Secrets are **not** managed by Helm. Create them manually before deploying:
+
+1. **Database password** — comes from `currencyexchangeratessync-db-credentials` (replicated from `postgresql` namespace).
+
+2. **App secrets** — create manually:
+   ```bash
+   kubectl -n currency-exchange-rates-sync create secret generic currency-exchange-rates-sync-secrets \
+     --from-literal=exchangeRatesAPIKey='<API_KEY>' \
+     --from-literal=rollbarToken='<ROLLBAR_TOKEN>' \
+     --from-literal=sentryDsn='<SENTRY_DSN>'
+   ```
 
 #### Install/Upgrade
 
-* `helm install currency-exchange-sync . -n currency-exchange-sync`
+```bash
+helm install currency-exchange-rates-sync . -n currency-exchange-rates-sync
+```
 
-* `helm upgrade currency-exchange-sync . -n currency-exchange-sync`
+```bash
+helm upgrade currency-exchange-rates-sync . -n currency-exchange-rates-sync
+```
 
 #### Run manually
 
-* `kubectl create job --from=cronjob/currency-exchange-sync-fixed-eight-hour-cron currency-exchange-sync-fixed-eight-hour-cron-manual-1 -n currency-exchange-sync`
+```bash
+kubectl create job --from=cronjob/currency-exchange-rates-sync currency-exchange-rates-sync-manual-1 \
+  -n currency-exchange-rates-sync
+```

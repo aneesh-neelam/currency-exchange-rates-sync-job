@@ -7,11 +7,22 @@ cronjob:
   retentionPeriodDays: 400
   env: Production
   logLevel: INFO
-  version: "2.2-prod"
+  version: "2.3-prod"
 
   metadata:
-    namespace: currency-exchange-sync
-    secret: sync-job
+    namespace: currency-exchange-rates-sync
+
+  # Secret containing DB password (replicated from postgresql namespace)
+  dbCredentialsSecret: currencyexchangeratessync-db-credentials
+
+  # Secret containing app credentials (API key, Rollbar, Sentry)
+  appSecretsName: currency-exchange-rates-sync-secrets
+
+  # Database connection (non-secret values; user, database, and password come from dbCredentialsSecret)
+  db:
+    host: pg-cluster-rw.postgresql.svc.cluster.local
+    port: "5432"
+    sslMode: prefer
 
   restartPolicy: Never
   backoffLimit: 1
@@ -19,16 +30,16 @@ cronjob:
   failedJobsHistoryLimit: 8
 
   image:
-    repository: registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync
+    repository: container-registry.container-registry.svc.cluster.local:5000/currency-exchange-sync
     pullPolicy: Always
-    imagePullSecrets: aneeshneelam-container-registry-sfo3
+    imagePullSecrets: ""
     restartPolicy: Never
     concurrencyPolicy: Forbid
 
   resources:
     requests:
       cpu: 100m
-      memory: 64Mi
+      memory: 128Mi
     limits:
       cpu: 500m
       memory: 128Mi

@@ -19,7 +19,7 @@ spec:
           namespace: {{ $.Values.cronjob.metadata.namespace }}
         spec:
           containers:
-          - image: {{ $.Values.cronjob.image.repository }}
+          - image: {{ $.Values.cronjob.image.repository }}:{{ $.Values.cronjob.version }}
             imagePullPolicy: {{ $.Values.cronjob.image.pullPolicy }}
             name: {{ $.Values.cronjob.name }}
             env:
@@ -36,47 +36,38 @@ spec:
               - name: EXCHANGE_RATES_API_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
+                    name: {{ $.Values.cronjob.appSecretsName }}
                     key: exchangeRatesAPIKey
               - name: DB_HOST
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlDbHost
+                value: {{ $.Values.cronjob.db.host }}
               - name: DB_PORT
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlDbPort
+                value: {{ $.Values.cronjob.db.port | quote }}
               - name: DB_DATABASE
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlDbName
+                    name: {{ $.Values.cronjob.dbCredentialsSecret }}
+                    key: database
               - name: DB_USER
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlDbUser
+                    name: {{ $.Values.cronjob.dbCredentialsSecret }}
+                    key: username
               - name: DB_PASSWORD
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlDbPassword
+                    name: {{ $.Values.cronjob.dbCredentialsSecret }}
+                    key: password
               - name: DB_SSL_MODE
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
-                    key: postgresSqlSslMode
+                value: {{ $.Values.cronjob.db.sslMode }}
               - name: ROLLBAR_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
+                    name: {{ $.Values.cronjob.appSecretsName }}
                     key: rollbarToken
               - name: SENTRY_DSN
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.cronjob.metadata.secret }}
+                    name: {{ $.Values.cronjob.appSecretsName }}
                     key: sentryDsn
             resources:
               requests:
@@ -91,8 +82,10 @@ spec:
           schedulerName: default-scheduler
           securityContext: {}
           terminationGracePeriodSeconds: 30
+          {{- if $.Values.cronjob.image.imagePullSecrets }}
           imagePullSecrets:
             - name: {{ $.Values.cronjob.image.imagePullSecrets }}
+          {{- end }}
   schedule: {{ quote $.Values.cronjob.schedule }}
   timeZone: {{ $.Values.cronjob.timeZone }}
   suspend: false

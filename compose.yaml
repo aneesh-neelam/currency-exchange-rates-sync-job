@@ -20,7 +20,7 @@ services:
       EXCHANGE_RATES_API_LATEST_RATES_URL: http://api.exchangeratesapi.io/v1/latest
       # API Key for https://manage.exchangeratesapi.io/dashboard
       EXCHANGE_RATES_API_KEY: 'dummy-api-key'
-      # Credentials for DigitalOcean Managed PostgreSQL Database
+      # Credentials for PostgreSQL Database
       DB_HOST: 'localhost'
       DB_PORT: '5432'
       DB_DATABASE: 'postgres'
