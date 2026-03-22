@@ -4,8 +4,8 @@ cronjob:
   id: currency-exchange-rates-sync
   timeZone: "Asia/Kolkata"
   exchangeRatesApiLatestRatesUrl: http://api.exchangeratesapi.io/v1/latest
-  retentionPeriodDays: 400
-  env: Production
+  retentionPeriodDays: 1825
+  env: Homelab
   logLevel: INFO
   version: "2.3-prod"
 
@@ -30,8 +30,8 @@ cronjob:
   failedJobsHistoryLimit: 8
 
   image:
-    repository: container-registry.container-registry.svc.cluster.local:5000/currency-exchange-sync
-    pullPolicy: Always
+    repository: macstation-ubuntu-1.local:30500/currency-exchange-sync
+    pullPolicy: IfNotPresent
     imagePullSecrets: ""
     restartPolicy: Never
     concurrencyPolicy: Forbid
