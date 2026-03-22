@@ -10,7 +10,7 @@ DeclarativeBase = declarative_base()
 class ExchangeRate(DeclarativeBase):
     __tablename__ = 'exchange_rates'
 
-    id: Mapped[int] = mapped_column(name='id')
+    id: Mapped[int] = mapped_column(sqlalchemy.Identity(), name='id', insert_default=None)
     date: Mapped[datetime.date] = mapped_column(sqlalchemy.DATE(), name='date', nullable=False, key='date')
     timestamp: Mapped[datetime.datetime] = mapped_column(sqlalchemy.TIMESTAMP(timezone=True), name='timestamp', nullable=False, primary_key=True, key='timestamp')
     epoch_seconds: Mapped[int] = mapped_column(sqlalchemy.BIGINT(), name='epoch_seconds', nullable=False, key='epoch_seconds')
