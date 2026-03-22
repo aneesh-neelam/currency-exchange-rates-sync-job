@@ -31,7 +31,7 @@ cronjob:
 
   image:
     repository: macstation-ubuntu-1.local:30500/currency-exchange-sync
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     imagePullSecrets: ""
     restartPolicy: Never
     concurrencyPolicy: Forbid
