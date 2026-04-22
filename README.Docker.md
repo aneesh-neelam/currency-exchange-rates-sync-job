@@ -26,6 +26,10 @@ DigitalOcean Container Registry (Private)
 
 * `docker buildx build . --push --platform linux/amd64 --tag registry.digitalocean.com/aneeshneelam-container-registry-sfo3/currency-exchange-sync --attest type=provenance,mode=max`
 
+Homelab Kubernetes Cluster Container Registry (Private)
+
+* `docker buildx build . --push --platform linux/arm64,linux/amd64,linux/amd64/v2 --tag macstation-ubuntu-1.local:30500/currency-exchange-sync:latest --tag macstation-ubuntu-1.local:30500/currency-exchange-sync:2.4`
+
 ### References
 
 * [Docker's Python guide](https://docs.docker.com/language/python/)

@@ -32,7 +32,7 @@ spec:
               - name: LOG_LEVEL
                 value: {{ $.Values.cronjob.logLevel }}
               - name: CODE_VERSION
-                value: {{ $.Values.cronjob.version }}
+                value: {{ $.Values.cronjob.version | quote }}
               - name: EXCHANGE_RATES_API_KEY
                 valueFrom:
                   secretKeyRef:
