@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/go/dockerfile-reference/
 
-ARG IMAGE_TAG=3.14.3-slim-trixie
+ARG IMAGE_TAG=3.14.4-slim-trixie
 FROM python:${IMAGE_TAG} AS base
 
 RUN apt update \

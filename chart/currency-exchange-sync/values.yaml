@@ -7,7 +7,7 @@ cronjob:
   retentionPeriodDays: 1825
   env: Homelab
   logLevel: INFO
-  version: "2.3-prod"
+  version: "2.4-prod"
 
   metadata:
     namespace: currency-exchange-rates-sync
