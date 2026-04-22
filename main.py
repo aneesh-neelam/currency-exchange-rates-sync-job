@@ -187,13 +187,15 @@ if __name__ == '__main__':
     rollbar.init(
         access_token=rollbar_token,
         environment=deployment_env,
-        code_version=code_version
+        code_version=code_version,
+        timeout=10,
     )
     sentry_dsn = get_sentry_dsn()
+    sentry_debug = log_level.upper() == 'DEBUG'
     sentry_sdk.init(
         dsn=sentry_dsn,
-        shutdown_timeout=5,
-        debug=True,
+        shutdown_timeout=10,
+        debug=sentry_debug,
         send_default_pii=True, # There is no PII anyway
         attach_stacktrace=True,
         enable_tracing=True,
