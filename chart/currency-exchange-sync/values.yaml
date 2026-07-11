@@ -7,7 +7,7 @@ cronjob:
   retentionPeriodDays: 1825
   env: Homelab
   logLevel: INFO
-  version: "2.4"
+  version: "2.5"
 
   metadata:
     namespace: currency-exchange-rates-sync
@@ -26,8 +26,8 @@ cronjob:
 
   restartPolicy: Never
   backoffLimit: 1
-  successfulJobsHistoryLimit: 8
-  failedJobsHistoryLimit: 8
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
 
   image:
     repository: macstation-ubuntu-1.local:30500/currency-exchange-sync

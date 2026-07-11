@@ -27,8 +27,8 @@ The following table lists the configurable parameters of the Currency-exchange-s
 | `cronjob.db.sslMode` | PostgreSQL SSL mode | `"prefer"` |
 | `cronjob.restartPolicy` | Pod restart policy | `"Never"` |
 | `cronjob.backoffLimit` | Job backoff limit | `1` |
-| `cronjob.successfulJobsHistoryLimit` | Successful job history | `8` |
-| `cronjob.failedJobsHistoryLimit` | Failed job history | `8` |
+| `cronjob.successfulJobsHistoryLimit` | Successful job history | `3` |
+| `cronjob.failedJobsHistoryLimit` | Failed job history | `3` |
 | `cronjob.image.repository` | Container image | `"container-registry.container-registry.svc.cluster.local:5000/currency-exchange-sync"` |
 | `cronjob.image.pullPolicy` | Image pull policy | `"Always"` |
 | `cronjob.image.imagePullSecrets` | Image pull secret (optional) | `""` |
